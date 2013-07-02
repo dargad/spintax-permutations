@@ -31,11 +31,11 @@
 
 #include <spintax.hpp>
 
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE TestParser
-#include <boost/test/unit_test.hpp>
+#include <boost/test/parameterized_test.hpp>
+#include <boost/test/included/unit_test.hpp>
 
 using namespace spintax;
+using namespace boost::unit_test;
 
 size_t test_parser(std::string fname) {
     std::ifstream input(fname);
@@ -48,16 +48,23 @@ size_t test_parser(std::string fname) {
     return std::count(output.begin(), output.end(), '\n');
 }
 
-BOOST_AUTO_TEST_CASE( full_parser )
-{
-    std::vector<std::string> result;
-
-    std::vector<std::string> inputFilenames = { "test0.txt", "test1.txt", "test2.txt" };
-    std::vector<size_t> expectedLenghts =     {          16,          80,      40600  };
-
-    assert(expectedLenghts.size() == inputFilenames.size());
-
-    for (size_t i=0; i<inputFilenames.size(); ++i) {
-        BOOST_CHECK_EQUAL(test_parser(inputFilenames[i]), expectedLenghts[i]);
-    }
+void test_data(const std::pair<std::string, size_t>& data) {
+    size_t result(test_parser(data.first));
+    BOOST_CHECK_EQUAL(result, data.second);
 }
+
+test_suite *init_unit_test_suite(int argc, char *argv[]) {
+    test_suite *ts = BOOST_TEST_SUITE("parser");
+    std::vector<std::pair<std::string, size_t> > params;
+    for (int i=1; i<argc; i+=2) {
+        std::string fname(argv[i]);
+        std::istringstream iss(argv[i+1]);
+        size_t expectedLength(0);
+        iss >> expectedLength;
+        params.push_back(std::pair<std::string, size_t>(fname, expectedLength));
+
+    }
+    ts->add(BOOST_PARAM_TEST_CASE(&test_data, params.begin(), params.end()));
+    return ts;
+}
+

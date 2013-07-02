@@ -15,7 +15,10 @@ if(Boost_FOUND)
                           spintax
                           ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
                           )
-    add_test(NAME tests-parser COMMAND tests WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tests/data)
+    add_test(NAME test0 COMMAND tests test0.txt 16 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tests/data)
+    add_test(NAME test1 COMMAND tests test1.txt 80 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tests/data)
+    add_test(NAME test2 COMMAND tests test2.txt 40600 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/tests/data)
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} DEPENDS tests)
+
 endif()
 
