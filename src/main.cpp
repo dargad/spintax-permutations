@@ -69,10 +69,15 @@ int main(int argc, const char *argv[]) {
         }
     }
 
+    std::string lines;
     std::string line;
-    std::getline(*input, line);
+    *input >> std::noskipws;
+    while (std::getline(*input, line)) {
+        lines += line + "\n";
+    }
+
     Parser parser;
-    parser.parse(line).writePermutations(*output);
+    parser.parse(lines).writePermutations(*output);
 
     if (freeInput) {
         delete input;
