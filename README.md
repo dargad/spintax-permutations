@@ -5,8 +5,8 @@ spintax parser and permutations generator
 Usage (application)
 -------------------
 
-The application shipped with the framework was designed to take only one line of input containing spintax syntax and
-generate all possible permutations of the input.
+The application shipped with the framework was designed to take input from a single source
+containing spintax syntax and generate all possible permutations of the input.
 
 It reads from stdin and writes to stdout by default, but the use can use input/output files as well
 by using th `-i` and `-o` options respectively.
